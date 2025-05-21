@@ -24,7 +24,6 @@ export default defineNuxtConfig({
         },
     },
     app: {
-        baseURL: '/dialogue-of-flowers/',
         head: {
             bodyAttrs: {
                 class: 'fd-theme',

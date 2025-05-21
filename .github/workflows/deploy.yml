@@ -19,7 +19,7 @@ jobs:
           node-version: "22"
       # Pick your own package manager and build script
       - run: yarn install
-      - run: yarn nuxt build
+      - run: NUXT_APP_BASE_URL=/dialogue-of-flowers/ yarn nuxt build --preset github_pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
