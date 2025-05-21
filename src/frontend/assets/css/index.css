@@ -1,0 +1,59 @@
+@import './fonts.css';
+@import './variables.css';
+@import './normalize.css';
+@import 'primeicons/primeicons.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    box-sizing: border-box;
+    height: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 320px;
+    min-height: 100vh;
+    font-family: 'Montserrat', 'Helvetica', 'Arial', sans-serif;
+    color: var(--text-primary);
+    word-wrap: break-word;
+    background-color: #ffffff;
+    padding-top: 52px;
+}
+
+.header {
+    font-family: 'Playfair Display', 'Times New Roman', 'Times', serif;
+}
+
+.container {
+    @apply mx-auto px-4 md:px-6 lg:px-8 2xl:max-w-[var(--max-container-width)];
+}
+
+ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+ul.unset, ul.unset > li {
+    margin: inherit;
+    padding: inherit;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip: rect(0,0,0,0);
+    -webkit-clip-path: inset(100%);
+    clip-path: inset(100%);
+}

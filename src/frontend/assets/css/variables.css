@@ -1,0 +1,7 @@
+.fd-theme {
+    --font-display: "Mulish", "sans-serif";
+    --max-container-width: 1440px;
+    --text-primary: #171A1F;
+    --text-secondary: #9095A0;
+    --text-header-hover: #52AE77;
+}
