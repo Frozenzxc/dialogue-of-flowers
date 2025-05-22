@@ -19,7 +19,7 @@ jobs:
           node-version: "22"
       # Pick your own package manager and build script
       - run: yarn install
-      - run: nuxt build --dotenv .env.gh --preset github_pages
+      - run: npx nuxi build --dotenv .env.gh --preset github_pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
