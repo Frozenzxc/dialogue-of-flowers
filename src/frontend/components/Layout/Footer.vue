@@ -9,10 +9,10 @@ const items: MenuItem[] = [
         label: 'Галерея',
         route: RouteName.Gallery,
     },
-    {
-        label: 'Анонсы',
-        route: RouteName.Announcements,
-    },
+    // {
+    //     label: 'Анонсы',
+    //     route: RouteName.Announcements,
+    // },
     {
         label: 'О нас',
         route: RouteName.AboutUs,
