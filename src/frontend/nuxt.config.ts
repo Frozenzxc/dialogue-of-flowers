@@ -24,7 +24,6 @@ export default defineNuxtConfig({
         },
     },
     app: {
-        baseURL: '/',
         head: {
             bodyAttrs: {
                 class: 'fd-theme',
