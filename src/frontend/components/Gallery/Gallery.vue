@@ -1,26 +1,15 @@
 <script setup lang="ts">
 import { RouteName } from '~/types/common/Enums/RouteName';
 
-const mainGallery = [
-    '/_nuxt/assets/img/gallery/1.webp',
-    '/_nuxt/assets/img/gallery/2.webp',
-    '/_nuxt/assets/img/gallery/3.webp',
-    '/_nuxt/assets/img/gallery/4.webp',
-    '/_nuxt/assets/img/gallery/5.webp',
-    '/_nuxt/assets/img/gallery/6.webp',
-];
+const mainGallery = computed(() => {
+    const arr = import.meta.glob('~/assets/img/gallery/*.webp', { eager: true });
+    return Object.values(arr).map((img) => img.default);
+});
 
-const souvenirsGallery = [
-    '/_nuxt/assets/img/souvenirs/1.webp',
-    '/_nuxt/assets/img/souvenirs/2.webp',
-    '/_nuxt/assets/img/souvenirs/3.webp',
-    '/_nuxt/assets/img/souvenirs/4.webp',
-    '/_nuxt/assets/img/souvenirs/5.webp',
-    '/_nuxt/assets/img/souvenirs/6.webp',
-    '/_nuxt/assets/img/souvenirs/7.webp',
-    '/_nuxt/assets/img/souvenirs/8.webp',
-    '/_nuxt/assets/img/souvenirs/9.webp',
-];
+const souvenirsGallery = computed(() => {
+    const arr = import.meta.glob('~/assets/img/souvenirs/*.webp', { eager: true });
+    return Object.values(arr).map((img) => img.default);
+});
 </script>
 
 <template>
