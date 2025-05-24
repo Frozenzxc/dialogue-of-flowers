@@ -51,7 +51,7 @@ export default defineNuxtConfig({
                     href: '/_nuxt/assets/fonts/PlayfairDisplay-SemiBold.woff2',
                 },
                 { rel: 'stylesheet', href: '~/assets/css/fonts.css' },
-                { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+                { rel: 'icon', type: 'image/png', href: '/favicon.png' },
             ],
         },
     },
