@@ -1,15 +1,31 @@
 <script setup lang="ts">
 import { RouteName } from '~/types/common/Enums/RouteName';
+import type { GalleryListItem } from '~/types/Gallery/GalleryListItem';
+import { useGalleryApi } from '~/api/gallery';
+import { useSouvenirsApi } from '~/api/souvenirs';
 
-const mainGallery = computed(() => {
-    const arr = import.meta.glob('~/assets/img/gallery/*.webp', { eager: true });
-    return Object.values(arr).map((img) => img.default);
-});
+const { getGallery } = useGalleryApi();
+const { getSouvenirs } = useSouvenirsApi();
 
-const souvenirsGallery = computed(() => {
-    const arr = import.meta.glob('~/assets/img/souvenirs/*.webp', { eager: true });
-    return Object.values(arr).map((img) => img.default);
-});
+// const mainGallery = computed(() => {
+//     const arr = import.meta.glob('~/assets/img/gallery/*.webp', { eager: true });
+//     return Object.values(arr).map((img) => img.default);
+// });
+
+const mainGallery = ref<GalleryListItem[]>([]);
+const souvenirsGallery = ref<GalleryListItem[]>([]);
+
+const onLoad = async () => {
+    mainGallery.value = await getGallery();
+    souvenirsGallery.value = await getSouvenirs();
+};
+
+onLoad();
+
+// const souvenirsGallery = computed(() => {
+//     const arr = import.meta.glob('~/assets/img/souvenirs/*.webp', { eager: true });
+//     return Object.values(arr).map((img) => img.default);
+// });
 </script>
 
 <template>

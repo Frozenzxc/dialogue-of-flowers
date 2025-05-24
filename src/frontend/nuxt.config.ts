@@ -60,4 +60,14 @@ export default defineNuxtConfig({
         viewer: false,
         cssPath: ['~/assets/css/index.css', { injectPosition: 'last' }],
     },
+
+    imports: {
+        dirs: ['./composables/**', './api/**'],
+    },
+
+    runtimeConfig: {
+        public: {
+            strapiApiUrl: '',
+        },
+    },
 });
