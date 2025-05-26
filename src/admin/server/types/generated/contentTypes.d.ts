@@ -506,6 +506,37 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiContactFormContactForm extends Struct.CollectionTypeSchema {
+  collectionName: 'contact_forms';
+  info: {
+    displayName: 'ContactForm';
+    pluralName: 'contact-forms';
+    singularName: 'contact-form';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    comment: Schema.Attribute.Text;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::contact-form.contact-form'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    phone: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiGalleryGallery extends Struct.CollectionTypeSchema {
   collectionName: 'gallery_list';
   info: {
@@ -1112,6 +1143,7 @@ declare module '@strapi/strapi' {
       'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
       'api::category.category': ApiCategoryCategory;
+      'api::contact-form.contact-form': ApiContactFormContactForm;
       'api::gallery.gallery': ApiGalleryGallery;
       'api::global.global': ApiGlobalGlobal;
       'api::souvenirs.souvenirs': ApiSouvenirsSouvenirs;

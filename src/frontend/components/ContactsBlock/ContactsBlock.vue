@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { ContactForm, ContactFormErrors } from '~/types/Contacts/ContactForm';
 import type { FormResolverOptions } from '@primevue/forms';
+import { useToast } from 'primevue/usetoast';
+
+const toast = useToast();
+const { createContactForm } = useContactFormApi();
 
 const model = ref<ContactForm>({} as ContactForm);
 
@@ -20,9 +24,15 @@ const resolver = ({ values }: FormResolverOptions) => {
     };
 };
 
-const onFormSubmit = ({ valid }: { valid: boolean }) => {
+const onFormSubmit = async ({ valid }: { valid: boolean }) => {
     if (valid) {
-        console.log(model.value);
+        await createContactForm(model.value);
+        toast.add({
+            severity: 'success',
+            summary: 'Успешно!',
+            detail: 'Ваш запрос будет обработан в ближайшее время.',
+            life: 6000,
+        });
     }
 };
 </script>
@@ -51,6 +61,7 @@ const onFormSubmit = ({ valid }: { valid: boolean }) => {
                         <InputText
                             v-model="model.email"
                             name="email"
+                            type="email"
                             fluid
                         />
                         <label for="email">Эл. почта</label>
@@ -121,5 +132,6 @@ const onFormSubmit = ({ valid }: { valid: boolean }) => {
                 <!--                </div>-->
             </Form>
         </div>
+        <Toast />
     </section>
 </template>

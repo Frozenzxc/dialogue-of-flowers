@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "contact_forms",
+  "info": {
+    "singularName": "contact-form",
+    "pluralName": "contact-forms",
+    "displayName": "ContactForm"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "email": {
+      "type": "email"
+    },
+    "name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "text"
+    }
+  }
+}
