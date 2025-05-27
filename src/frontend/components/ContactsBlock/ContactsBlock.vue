@@ -33,6 +33,7 @@ const onFormSubmit = async ({ valid }: { valid: boolean }) => {
             detail: 'Ваш запрос будет обработан в ближайшее время.',
             life: 6000,
         });
+        model.value = {} as ContactForm;
     }
 };
 </script>
