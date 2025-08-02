@@ -14,6 +14,9 @@ const runtimeConfig = useRuntimeConfig();
             v-for="item in list"
             :src="`${runtimeConfig.public.strapiApiUrl}${item.img?.url}`"
             alt="Image"
+            width="395"
+            height="263"
+            image-class="w-full h-full object-cover"
             preview
         />
     </div>

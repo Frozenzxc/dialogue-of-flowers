@@ -68,6 +68,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             strapiApiUrl: '',
+            yandexMetrikaId: '',
         },
     },
 });

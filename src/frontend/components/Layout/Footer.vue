@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouteName } from '~/types/common/Enums/RouteName';
 import type { MenuItem } from '~/types/Layout/MenuItem';
+import type { SocialItem } from '~/types/Layout/SocialItem';
 
 const currentYear = new Date().getFullYear();
 
@@ -20,6 +21,27 @@ const items: MenuItem[] = [
     {
         label: 'Контакты',
         route: RouteName.Contacts,
+    },
+];
+
+const socials: SocialItem[] = [
+    {
+        url: 'https://vk.com/dialogtsvetov',
+        title: 'Наша группа в VK',
+        description: 'Наша группа в VK',
+        iconName: 'vk-logo',
+    },
+    {
+        url: 'mailto:dialogtsvetov@yandex.ru',
+        title: 'Отправить email dialogtsvetov@yandex.ru',
+        description: 'Написать нам на email',
+        iconName: 'ya-mail-logo',
+    },
+    {
+        url: 'https://rutube.ru/channel/50542582/',
+        title: 'Наш канал на rutube',
+        description: 'Наш канал на rutube',
+        iconName: 'rutube-logo',
     },
 ];
 </script>
@@ -49,31 +71,16 @@ const items: MenuItem[] = [
                         </div>
                     </NuxtLink>
                     <ul class="flex gap-2">
-                        <li>
+                        <li v-for="social in socials">
                             <a
-                                href="https://vk.com/dialogtsvetov"
+                                :href="social.url"
                                 target="_blank"
                                 rel="noopener nofollow"
-                                title="Наша группа в VK"
+                                :title="social.title"
                             >
-                                <span class="sr-only">Наша группа в VK</span>
+                                <span class="sr-only">{{ social.description }}</span>
                                 <nuxt-icon
-                                    name="vk-logo"
-                                    filled
-                                    class="text-2xl"
-                                />
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="mailto:dialogtsvetov@yandex.ru"
-                                target="_blank"
-                                rel="noopener nofollow"
-                                title="Отправить email dialogtsvetov@yandex.ru"
-                            >
-                                <span class="sr-only">Написать нам на email</span>
-                                <nuxt-icon
-                                    name="ya-mail-logo"
+                                    :name="social.iconName"
                                     filled
                                     class="text-2xl"
                                 />

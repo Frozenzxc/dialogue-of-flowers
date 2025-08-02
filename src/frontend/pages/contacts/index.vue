@@ -8,5 +8,5 @@ definePageMeta({
 </script>
 
 <template>
-    <ContactsBlock />
+    <ContactsBlock class="min-h-[calc(100vh-284px)]" />
 </template>
