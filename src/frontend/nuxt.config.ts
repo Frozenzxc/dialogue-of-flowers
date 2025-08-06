@@ -50,7 +50,7 @@ export default defineNuxtConfig({
                     crossorigin: 'anonymous',
                     href: '/_nuxt/assets/fonts/PlayfairDisplay-SemiBold.woff2',
                 },
-                { rel: 'stylesheet', href: '~/assets/css/fonts.css' },
+                { rel: 'stylesheet', href: '/_nuxt/assets/css/fonts.css' },
                 { rel: 'icon', type: 'image/png', href: '/favicon.png' },
             ],
         },

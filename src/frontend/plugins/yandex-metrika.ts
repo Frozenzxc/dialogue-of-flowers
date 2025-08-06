@@ -22,7 +22,7 @@ export default defineNuxtPlugin(() => {
             a.parentNode.insertBefore(k, a);
     })(window, document, 'script', `https://mc.yandex.ru/metrika/tag.js?id=${config.yandexMetrikaId}`, 'ym');
 
-    ym(103571975, 'init', {
+    ym(config.yandexMetrikaId, 'init', {
         ssr: true,
         webvisor: true,
         clickmap: true,
