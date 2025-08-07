@@ -35,24 +35,7 @@ export default defineNuxtConfig({
                     content: 'Диалог цветов',
                 },
             ],
-            link: [
-                {
-                    rel: 'preconnect',
-                    as: 'font',
-                    type: 'font/woff2',
-                    crossorigin: 'anonymous',
-                    href: '/_nuxt/assets/fonts/Montserrat-SemiBold.woff2',
-                },
-                {
-                    rel: 'preconnect',
-                    as: 'font',
-                    type: 'font/woff2',
-                    crossorigin: 'anonymous',
-                    href: '/_nuxt/assets/fonts/PlayfairDisplay-SemiBold.woff2',
-                },
-                { rel: 'stylesheet', href: '/_nuxt/assets/css/fonts.css' },
-                { rel: 'icon', type: 'image/png', href: '/favicon.png' },
-            ],
+            link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
         },
     },
 
