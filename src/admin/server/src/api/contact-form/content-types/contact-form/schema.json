@@ -21,6 +21,10 @@
     },
     "comment": {
       "type": "text"
+    },
+    "policy": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

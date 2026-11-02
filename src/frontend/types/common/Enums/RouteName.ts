@@ -4,4 +4,5 @@ export enum RouteName {
     Announcements = 'Announcements',
     Gallery = 'Gallery',
     Contacts = 'Contacts',
+    Privacy = 'Privacy',
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouteName } from '~/types/common/Enums/RouteName';
 import type { ContactForm, ContactFormErrors } from '~/types/Contacts/ContactForm';
 import type { FormResolverOptions } from '@primevue/forms';
 import { useToast } from 'primevue/usetoast';
@@ -6,7 +7,16 @@ import { useToast } from 'primevue/usetoast';
 const toast = useToast();
 const { createContactForm } = useContactFormApi();
 
-const model = ref<ContactForm>({} as ContactForm);
+const emptyForm = (): ContactForm => ({
+    email: '',
+    name: '',
+    phone: '',
+    comment: '',
+    policy: false,
+});
+
+const model = ref<ContactForm>(emptyForm());
+const submitting = ref(false);
 
 const resolver = ({ values }: FormResolverOptions) => {
     const errors = {} as ContactFormErrors;
@@ -19,13 +29,22 @@ const resolver = ({ values }: FormResolverOptions) => {
         errors.name = [{ message: 'Поле «Имя» обязательно для заполнения' }];
     }
 
+    if (!values.policy) {
+        errors.policy = [{ message: 'Необходимо согласие на обработку персональных данных' }];
+    }
+
     return {
         errors,
     };
 };
 
 const onFormSubmit = async ({ valid }: { valid: boolean }) => {
-    if (valid) {
+    if (!valid || submitting.value) {
+        return;
+    }
+
+    submitting.value = true;
+    try {
         await createContactForm(model.value);
         toast.add({
             severity: 'success',
@@ -33,7 +52,9 @@ const onFormSubmit = async ({ valid }: { valid: boolean }) => {
             detail: 'Ваш запрос будет обработан в ближайшее время.',
             life: 6000,
         });
-        model.value = {} as ContactForm;
+        model.value = emptyForm();
+    } finally {
+        submitting.value = false;
     }
 };
 </script>
@@ -115,22 +136,41 @@ const onFormSubmit = async ({ valid }: { valid: boolean }) => {
                     />
                     <label for="comment">Сообщение</label>
                 </FloatLabel>
+                <div>
+                    <div class="flex gap-2 items-start">
+                        <Checkbox
+                            v-model="model.policy"
+                            input-id="policy-accept"
+                            name="policy"
+                            binary
+                        />
+                        <label
+                            for="policy-accept"
+                            class="text-xs md:text-sm cursor-pointer select-none"
+                        >
+                            Отправляя форму, я даю согласие на обработку персональных данных и
+                            принимаю
+                            <NuxtLink
+                                :to="{ name: RouteName.Privacy }"
+                                class="underline hover:text-[var(--text-header-hover)]"
+                                >политику конфиденциальности</NuxtLink
+                            >
+                        </label>
+                    </div>
+                    <Message
+                        v-if="$form.policy?.invalid"
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                    >
+                        {{ $form.policy.error.message }}
+                    </Message>
+                </div>
                 <Button
                     type="submit"
                     label="Отправить"
+                    :loading="submitting"
                 />
-                <!--                <div class="flex gap-2">-->
-                <!--                    <Checkbox-->
-                <!--                        input-id="policy"-->
-                <!--                        name="policy"-->
-                <!--                        value="true"-->
-                <!--                        required-->
-                <!--                    />-->
-                <!--                    <label for="policy">-->
-                <!--                        Нажимая на кнопку, вы даете согласие на обработку персональных данных и соглашаетесь c политикой-->
-                <!--                        конфиденциальности-->
-                <!--                    </label>-->
-                <!--                </div>-->
             </Form>
         </div>
         <Toast />

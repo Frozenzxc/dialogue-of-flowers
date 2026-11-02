@@ -97,6 +97,14 @@ const socials: SocialItem[] = [
                             {{ item.label }}
                         </NuxtLink>
                     </li>
+                    <li>
+                        <NuxtLink
+                            :to="{ name: RouteName.Privacy }"
+                            class="text-sm hover:text-[var(--text-header-hover)]"
+                        >
+                            Политика конфиденциальности
+                        </NuxtLink>
+                    </li>
                 </ul>
             </div>
             <p class="text-center text-xs md:text-sm">
