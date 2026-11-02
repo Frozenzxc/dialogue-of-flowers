@@ -1,0 +1,56 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-strapi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Укажите POSTGRES_PASSWORD в .env}
+      POSTGRES_DB: ${POSTGRES_DB:-strapi}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  strapi:
+    build:
+      context: ./src/admin/server
+      args:
+        # префикс /cms запекается в сборку админ-панели и обязан совпадать с nginx
+        PUBLIC_URL: ${PUBLIC_URL:?Укажите PUBLIC_URL в .env}
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_URL: postgres://${POSTGRES_USER:-strapi}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-strapi}
+    volumes:
+      # медиа галереи живут на хосте и переживают пересборку контейнера
+      - ./data/uploads:/opt/app/public/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./src/frontend
+      args:
+        NUXT_PUBLIC_STRAPI_API_URL: ${STRAPI_API_URL:-/cms}
+        NUXT_PUBLIC_YANDEX_METRIKA_ID: ${YANDEX_METRIKA_ID:-103571975}
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      # раскомментировать после выпуска сертификата (см. DEPLOY.md, раздел SSL):
+      # - '443:443'
+    volumes:
+      # webroot для ACME-проверок certbot
+      - ./deploy/certbot/www:/var/www/certbot:ro
+      # раскомментировать после выпуска сертификата:
+      # - /etc/letsencrypt:/etc/letsencrypt:ro
+      # - ./deploy/nginx-ssl.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - strapi
+
+volumes:
+  pgdata:

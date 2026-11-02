@@ -1,0 +1,11 @@
+node_modules
+dist
+.strapi
+.tmp
+.env
+.env.*
+!.env.example
+data
+ecosystem.config.js
+Dockerfile
+.dockerignore

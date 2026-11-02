@@ -12,3 +12,25 @@ yarn-error.log*
 
 .idea
 .data
+.zcode
+
+# env-файлы с секретами (примеры .env.example остаются в репозитории)
+/.env
+/deploy/.env
+src/admin/server/.env*
+!src/admin/server/.env.example
+src/frontend/.env.prod
+
+# артефакты сборки
+src/admin/server/.tmp/
+src/admin/server/dist/
+src/admin/server/.strapi/
+src/frontend/.nuxt/
+src/frontend/.output/
+
+# данные прод-стека (docker compose)
+/data/
+/deploy/certbot/
+
+# экспорт БД при миграции
+export*.tar.gz
