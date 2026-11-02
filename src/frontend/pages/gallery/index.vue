@@ -8,5 +8,7 @@ definePageMeta({
 </script>
 
 <template>
-    <Gallery />
+    <!-- renamed GallerySection (was Gallery): имя Gallery занято одноимённым
+         компонентом PrimeVue 5, который затенял локальный -->
+    <GallerySection />
 </template>

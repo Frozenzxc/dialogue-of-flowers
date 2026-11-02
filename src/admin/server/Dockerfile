@@ -1,5 +1,5 @@
 # ---------- Сборка ----------
-FROM node:22-bookworm-slim AS builder
+FROM node:24-bookworm-slim AS builder
 
 # python3/make/g++ нужны для сборки нативных модулей (better-sqlite3)
 RUN apt-get update \
@@ -21,7 +21,7 @@ ENV PUBLIC_URL=$PUBLIC_URL
 RUN npm run build
 
 # ---------- Рантайм ----------
-FROM node:22-bookworm-slim AS runtime
+FROM node:24-bookworm-slim AS runtime
 
 ENV NODE_ENV=production
 WORKDIR /opt/app

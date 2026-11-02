@@ -1,5 +1,5 @@
 # ---------- Сборка статки Nuxt (ssr: false) ----------
-FROM node:22-bookworm-slim AS builder
+FROM node:24-bookworm-slim AS builder
 
 RUN corepack enable
 
@@ -13,8 +13,10 @@ COPY . .
 # публичные значения runtimeConfig запекаются в бандл в момент generate
 ARG NUXT_PUBLIC_STRAPI_API_URL=/cms
 ARG NUXT_PUBLIC_YANDEX_METRIKA_ID=103571975
+ARG PRIMEUI_LICENSE=
 ENV NUXT_PUBLIC_STRAPI_API_URL=$NUXT_PUBLIC_STRAPI_API_URL \
-    NUXT_PUBLIC_YANDEX_METRIKA_ID=$NUXT_PUBLIC_YANDEX_METRIKA_ID
+    NUXT_PUBLIC_YANDEX_METRIKA_ID=$NUXT_PUBLIC_YANDEX_METRIKA_ID \
+    PRIMEUI_LICENSE=$PRIMEUI_LICENSE
 
 RUN yarn generate
 

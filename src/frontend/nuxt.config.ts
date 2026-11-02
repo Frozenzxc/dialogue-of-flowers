@@ -52,6 +52,9 @@ export default defineNuxtConfig({
         public: {
             strapiApiUrl: '',
             yandexMetrikaId: '',
+            // ключ PrimeUI (https://primeui.dev); читается плагином @primevue/nuxt-module.
+            // Задаётся env PRIMEUI_LICENSE при сборке (docker-compose, сервис web)
+            PRIMEUI_LICENSE: process.env.PRIMEUI_LICENSE ?? '',
         },
     },
 });

@@ -38,6 +38,7 @@ services:
       args:
         NUXT_PUBLIC_STRAPI_API_URL: ${STRAPI_API_URL:-/cms}
         NUXT_PUBLIC_YANDEX_METRIKA_ID: ${YANDEX_METRIKA_ID:-103571975}
+        PRIMEUI_LICENSE: ${PRIMEUI_LICENSE:-}
     restart: unless-stopped
     ports:
       - '80:80'
