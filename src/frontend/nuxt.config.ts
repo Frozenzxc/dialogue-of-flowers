@@ -12,7 +12,8 @@ export default defineNuxtConfig({
             },
         ],
     },
-    ssr: false,
+    // SSR включён ради SEO: поисковики получают готовый HTML с контентом
+    ssr: true,
     primevue: {
         options: {
             theme: {
@@ -27,6 +28,9 @@ export default defineNuxtConfig({
         head: {
             bodyAttrs: {
                 class: 'fd-theme',
+            },
+            htmlAttrs: {
+                lang: 'ru',
             },
             meta: [
                 { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -49,12 +53,23 @@ export default defineNuxtConfig({
     },
 
     runtimeConfig: {
+        // только сервер: внутренний адрес Strapi для SSR-запросов
+        strapiInternalUrl: 'http://localhost:1337',
         public: {
             strapiApiUrl: '',
+            // канонический адрес сайта для canonical/OG/sitemap
+            siteUrl: '',
             yandexMetrikaId: '',
             // ключ PrimeUI (https://primeui.dev); читается плагином @primevue/nuxt-module.
             // Задаётся env PRIMEUI_LICENSE при сборке (docker-compose, сервис web)
             PRIMEUI_LICENSE: process.env.PRIMEUI_LICENSE ?? '',
+        },
+    },
+
+    nitro: {
+        prerender: {
+            // генерируем /sitemap.xml статикой при сборке
+            routes: ['/sitemap.xml'],
         },
     },
 });

@@ -1,0 +1,42 @@
+# Nuxt SSR-сервер: сборка + Node-рантайм (обслуживает HTML и статику через nitro)
+# Проксируется контейнером web (nginx).
+
+# ---------- Сборка ----------
+FROM node:24-bookworm-slim AS builder
+
+RUN corepack enable
+
+WORKDIR /app
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+COPY . .
+
+# публичные значения runtimeConfig запекаются в бандл в момент сборки
+ARG NUXT_PUBLIC_STRAPI_API_URL=/cms
+ARG NUXT_PUBLIC_YANDEX_METRIKA_ID=103571975
+ARG NUXT_PUBLIC_SITE_URL
+ARG PRIMEUI_LICENSE=
+ENV NUXT_PUBLIC_STRAPI_API_URL=$NUXT_PUBLIC_STRAPI_API_URL \
+    NUXT_PUBLIC_YANDEX_METRIKA_ID=$NUXT_PUBLIC_YANDEX_METRIKA_ID \
+    NUXT_PUBLIC_SITE_URL=$NUXT_PUBLIC_SITE_URL \
+    PRIMEUI_LICENSE=$PRIMEUI_LICENSE
+
+# nuxt build без --dotenv: env приходит build-аргами
+RUN npx nuxt build
+
+# ---------- Рантайм ----------
+FROM node:24-bookworm-slim AS runtime
+
+ENV NODE_ENV=production \
+    HOST=0.0.0.0 \
+    PORT=3000 \
+    NITRO_PORT=3000
+
+WORKDIR /app
+COPY --from=builder /app/.output ./.output
+
+EXPOSE 3000
+
+CMD ["node", ".output/server/index.mjs"]

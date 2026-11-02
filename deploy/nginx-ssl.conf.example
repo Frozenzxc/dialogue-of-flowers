@@ -1,5 +1,6 @@
-# Прод-конфиг nginx (SSL). Монтируется в контейнер web (см. docker-compose.yml).
-# Сертификат Let's Encrypt покрывает apex + www; www редиректит на apex (канонический хост).
+# Вариант nginx-конфига после выпуска Let's Encrypt сертификата.
+# Копируется в контейнер томом (см. docker-compose.yml, сервис web).
+# Сертификаты: /etc/letsencrypt/live/<домен>/ на хосте. SAN: apex + www; www -> apex.
 
 # http -> https сразу на канонический домен (ACME для продления остаётся на 80)
 server {
@@ -38,32 +39,20 @@ server {
     ssl_prefer_server_ciphers off;
     ssl_session_cache shared:SSL:10m;
 
-    root /usr/share/nginx/html;
-    index index.html;
+    client_max_body_size 100m;
 
     gzip on;
     gzip_comp_level 5;
     gzip_vary on;
     gzip_types text/plain text/css application/javascript application/json image/svg+xml;
 
-    location ^~ /_nuxt/ {
-        add_header Cache-Control "public, max-age=31536000, immutable";
-        try_files $uri =404;
-    }
+    resolver 127.0.0.11 valid=10s ipv6=off;
 
-    location ~* \.(webp|png|jpg|jpeg|svg|gif|ico|woff|woff2|ttf)$ {
-        expires 30d;
-        add_header Cache-Control "public, max-age=2592000";
-        try_files $uri =404;
-    }
-
-    # ^~ обязателен: без него regex локаций выше перехватят /cms/uploads/*.webp
     location = /cms {
         return 301 /cms/;
     }
 
     location ^~ /cms/ {
-        resolver 127.0.0.11 valid=10s ipv6=off;
         set $strapi_upstream strapi:1337;
         rewrite ^/cms/(.*)$ /$1 break;
         proxy_pass http://$strapi_upstream;
@@ -76,11 +65,30 @@ server {
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
 
-        client_max_body_size 100m;
         proxy_read_timeout 300s;
     }
 
+    location ^~ /_nuxt/ {
+        set $frontend_upstream frontend:3000;
+        proxy_pass http://$frontend_upstream;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+
+    location ~* \.(webp|png|jpg|jpeg|svg|gif|ico|woff|woff2|ttf)$ {
+        set $frontend_upstream frontend:3000;
+        proxy_pass http://$frontend_upstream;
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+    }
+
     location / {
-        try_files $uri $uri/ /index.html;
+        set $frontend_upstream frontend:3000;
+        proxy_pass http://$frontend_upstream;
+
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }

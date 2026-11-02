@@ -1,2 +1,3 @@
 User-agent: *
 Disallow: /cms/
+Sitemap: https://xn--80aeacdjrz1ad7b6b.xn--p1ai/sitemap.xml

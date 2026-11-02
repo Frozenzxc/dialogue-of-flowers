@@ -6,6 +6,8 @@ definePageMeta({
     name: RouteName.Privacy,
 });
 
+useSeo(RouteName.Privacy);
+
 const sections = [
     {
         title: '1. Общие положения',

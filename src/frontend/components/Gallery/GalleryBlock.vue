@@ -13,7 +13,7 @@ const runtimeConfig = useRuntimeConfig();
         <Image
             v-for="item in list"
             :src="`${runtimeConfig.public.strapiApiUrl}${item.img?.url}`"
-            alt="Image"
+            :alt="item.img?.alternativeText || 'Композиция из керамических цветов ручной работы'"
             width="395"
             height="263"
             image-class="w-full h-full object-cover"

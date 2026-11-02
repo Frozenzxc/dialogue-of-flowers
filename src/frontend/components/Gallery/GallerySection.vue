@@ -7,25 +7,13 @@ import { useSouvenirsApi } from '~/api/souvenirs';
 const { getGallery } = useGalleryApi();
 const { getSouvenirs } = useSouvenirsApi();
 
-// const mainGallery = computed(() => {
-//     const arr = import.meta.glob('~/assets/img/gallery/*.webp', { eager: true });
-//     return Object.values(arr).map((img) => img.default);
-// });
+const { data } = await useAsyncData('gallery', async () => {
+    const [main, souvenirs] = await Promise.all([getGallery(), getSouvenirs()]);
+    return { main, souvenirs };
+});
 
-const mainGallery = ref<GalleryListItem[]>([]);
-const souvenirsGallery = ref<GalleryListItem[]>([]);
-
-const onLoad = async () => {
-    mainGallery.value = await getGallery();
-    souvenirsGallery.value = await getSouvenirs();
-};
-
-onLoad();
-
-// const souvenirsGallery = computed(() => {
-//     const arr = import.meta.glob('~/assets/img/souvenirs/*.webp', { eager: true });
-//     return Object.values(arr).map((img) => img.default);
-// });
+const mainGallery = computed(() => data.value?.main ?? []);
+const souvenirsGallery = computed(() => data.value?.souvenirs ?? []);
 </script>
 
 <template>

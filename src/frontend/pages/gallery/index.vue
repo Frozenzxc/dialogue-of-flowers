@@ -5,6 +5,8 @@ definePageMeta({
     title: 'Диалог цветов',
     name: RouteName.Gallery,
 });
+
+useSeo(RouteName.Gallery);
 </script>
 
 <template>
