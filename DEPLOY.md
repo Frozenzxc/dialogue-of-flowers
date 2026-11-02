@@ -6,17 +6,18 @@
 
 ```
 интернет :80/:443
-└── web       — nginx: статика Nuxt SPA (ssr:false, nuxi generate)
-                + reverse-proxy /cms/* -> strapi:1337
+└── web       — nginx-реверспрокси (без сборки в образе)
+    ├── frontend — Nuxt SSR (Node 24, порт 3000): HTML с контентом + статика
     ├── strapi — Strapi 5 (Node 24), внутренний порт 1337
     │   └── ./data/uploads:/opt/app/public/uploads  (медиа на хосте)
     └── db     — postgres:17-alpine, внутренний порт 5432
         └── volume pgdata
 ```
 
-Один домен, один origin: фронтенд ходит на API по относительному пути `/cms`,
-поэтому CORS не настраивается вовсе. Стек целиком описан в `docker-compose.yml`
-в корне репозитория.
+SSR включён ради SEO (страницы отдают полный HTML). Фронтенд при работе в
+браузере ходит на API по относительному пути `/cms`, при рендеринге на сервере —
+на `http://strapi:1337` напрямую (`NUXT_STRAPI_INTERNAL_URL`). Канонический
+домен для canonical/OG/sitemap задаётся `SITE_URL` в `.env`.
 
 ---
 
