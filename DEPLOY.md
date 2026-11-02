@@ -8,7 +8,7 @@
 интернет :80/:443
 └── web       — nginx: статика Nuxt SPA (ssr:false, nuxi generate)
                 + reverse-proxy /cms/* -> strapi:1337
-    ├── strapi — Strapi 5 (Node 22), внутренний порт 1337
+    ├── strapi — Strapi 5 (Node 24), внутренний порт 1337
     │   └── ./data/uploads:/opt/app/public/uploads  (медиа на хосте)
     └── db     — postgres:17-alpine, внутренний порт 5432
         └── volume pgdata
@@ -22,10 +22,12 @@
 
 ## 1. Подготовка VPS
 
-Требуется ~2 ГБ RAM для сборки Strapi (можно меньше, если добавить swap):
+Целевой сервер (REG.RU, кастомный тариф): **2 vCPU / 4 ГБ RAM / 40 ГБ NVMe, Ubuntu 24.04 LTS**.
+Этого хватает с запасом: сборка идёт без свопа (~10–15 минут на обе сборки),
+постоянно занято ~6 ГБ из 40 (ОС ~2,5 + docker-образы ~2 + данные).
 
 ```bash
-# swap при необходимости (VPS с 1 ГБ):
+# своп 2 ГБ — страховка от пиков сборки (не обязателен, но полезен):
 sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile \
   && sudo mkswap /swapfile && sudo swapon /swapfile \
   && echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
@@ -33,6 +35,9 @@ sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile \
 # Docker + compose plugin (Ubuntu/Debian):
 curl -fsSL https://get.docker.com | sudo sh
 sudo usermod -aG docker $USER  # перелогиниться после
+
+# гигиена диска (40 ГБ хватает, но после больших обновлений можно освобождать кэш):
+# docker builder prune -af && docker image prune -af
 ```
 
 ## 2. DNS
