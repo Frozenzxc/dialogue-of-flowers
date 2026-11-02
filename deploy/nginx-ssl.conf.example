@@ -1,8 +1,7 @@
-# Вариант nginx-конфига после выпуска Let's Encrypt сертификата.
-# Копируется в контейнер томом (см. закомментированные строки web.volumes в docker-compose.yml).
-# Сертификаты: /etc/letsencrypt/live/<домен>/fullchain.pem и privkey.pem на хосте.
+# Прод-конфиг nginx (SSL). Монтируется в контейнер web (см. docker-compose.yml).
+# Сертификат Let's Encrypt покрывает apex + www; www редиректит на apex (канонический хост).
 
-# http -> https (оставляем ACME для продления)
+# http -> https сразу на канонический домен (ACME для продления остаётся на 80)
 server {
     listen 80;
     server_name xn--80aeacdjrz1ad7b6b.xn--p1ai www.xn--80aeacdjrz1ad7b6b.xn--p1ai;
@@ -13,13 +12,24 @@ server {
     }
 
     location / {
-        return 301 https://$host$request_uri;
+        return 301 https://xn--80aeacdjrz1ad7b6b.xn--p1ai$request_uri;
     }
+}
+
+# www -> apex (301, канонический хост)
+server {
+    listen 443 ssl http2;
+    server_name www.xn--80aeacdjrz1ad7b6b.xn--p1ai;
+
+    ssl_certificate /etc/letsencrypt/live/xn--80aeacdjrz1ad7b6b.xn--p1ai/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/xn--80aeacdjrz1ad7b6b.xn--p1ai/privkey.pem;
+
+    return 301 https://xn--80aeacdjrz1ad7b6b.xn--p1ai$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name xn--80aeacdjrz1ad7b6b.xn--p1ai www.xn--80aeacdjrz1ad7b6b.xn--p1ai;
+    server_name xn--80aeacdjrz1ad7b6b.xn--p1ai;
 
     ssl_certificate /etc/letsencrypt/live/xn--80aeacdjrz1ad7b6b.xn--p1ai/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/xn--80aeacdjrz1ad7b6b.xn--p1ai/privkey.pem;
