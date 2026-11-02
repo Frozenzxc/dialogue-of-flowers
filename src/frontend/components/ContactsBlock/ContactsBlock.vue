@@ -61,6 +61,32 @@ const onFormSubmit = async ({ valid }: { valid: boolean }) => {
 
 <template>
     <section class="container py-6">
+        <div class="flex flex-col gap-2 pb-6">
+            <h1 class="text-2xl lg:text-4xl font-bold header">Контакты</h1>
+            <p class="text-sm lg:text-base">
+                Выставочный проект керамической флористики Елены Сафиевой, Тула.
+            </p>
+            <p class="text-sm lg:text-base">
+                Email:
+                <a
+                    href="mailto:dialogtsvetov@yandex.ru"
+                    class="underline hover:text-[var(--text-header-hover)]"
+                    >dialogtsvetov@yandex.ru</a
+                >
+                ·
+                <a
+                    href="https://vk.com/dialogtsvetov"
+                    class="underline hover:text-[var(--text-header-hover)]"
+                    >ВКонтакте</a
+                >
+                ·
+                <a
+                    href="https://rutube.ru/channel/50542582/"
+                    class="underline hover:text-[var(--text-header-hover)]"
+                    >Rutube</a
+                >
+            </p>
+        </div>
         <div class="flex flex-col md:flex-row gap-8">
             <div class="md:w-1/3">
                 <img
